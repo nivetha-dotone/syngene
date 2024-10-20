@@ -28,7 +28,9 @@
         <tr>
             <!-- First row: Project Code, Project Name, Project Manager -->
             <td><strong>Project Code:</strong></td>
-            <td>${projectInfo.projectCode }</td>
+            <td>${projectInfo.projectCode }
+            <input type="hidden" id="projectId" value="${projectInfo.projectCode }">
+            </td>
             <td><strong>Project Name:</strong></td>
             <td>${projectInfo.projectName }</td>
             <td><strong>Project Manager:</strong></td>
@@ -66,7 +68,9 @@
 						<td>${task.noOfManDays }</td>
 						<td>${task.startDate}</td>
 						<td>${task.endDate }</td>
-						<td><button class="btn btn-primary" onclick="openResourceBookingModal('${task.taskId}')">Book Resource</button></td>
+						<td><button class="btn btn-primary" onclick="openResourceBookingModal('${projectInfo.department}','${task.taskId }','${task.taskName }')">Book Resource</button>
+						 <button class="btn btn-primary" type="button" onclick="viewBookedResources('${task.taskId}')">View</button>
+						</td>
 		</tr>
         </c:forEach>
         </tbody>
@@ -96,11 +100,10 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Book Resources</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
+                <h5 class="modal-title">Booking Resource For Task <span id="modalTaskName"></span> </h5>
+                  <input type="hidden" id="modalTaskId" >
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
                 <div class="modal-body">
                     <!-- Resource Booking Form -->
                     <table id="resourceTable" class="table table-bordered">
@@ -122,11 +125,44 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" onclick="bookSelectedResources()">Book</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
     </div>
+    
+    <!-- Modal for viewing booked resources -->
+<div class="modal fade" id="viewBookedResourcesModal" tabindex="-1" role="dialog" aria-labelledby="viewBookedResourcesModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width:150%;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewBookedResourcesModalLabel">Booked Resources for Task</h5>
+                
+ <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table" id="bookedResourceTable">
+                    <thead>
+                        <tr>
+                            <th>Resource ID</th>
+                            <th>Resource Name</th>
+                            <th>Department</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Slot</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Booked resources will be dynamically populated here -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 </div>
 

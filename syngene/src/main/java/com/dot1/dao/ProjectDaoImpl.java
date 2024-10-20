@@ -85,7 +85,7 @@ public class ProjectDaoImpl implements ProjectDao{
 				task.setTaskName(rs1.getString("TaskName"));
 				task.setSkill(rs1.getString("Skill"));
 				task.setNoOfResources(Integer.parseInt(rs1.getString("NoOfResources")));
-				task.setNoOfResources(Integer.parseInt(rs1.getString("NoOfManDays")));
+				task.setNoOfManDays(Integer.parseInt(rs1.getString("NoOfManDays")));
 				task.setStartDate(rs.getString("StartDate"));
 				task.setEndDate(rs.getString("EndDate"));
 				tasks.add(task);

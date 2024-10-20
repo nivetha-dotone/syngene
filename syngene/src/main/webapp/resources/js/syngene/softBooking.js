@@ -43,67 +43,50 @@ function searchProjectOfSoftbooking() {
 				}
 				
 				
-				function openResourceBookingModal(taskId) {
+				function openResourceBookingModal(department, taskId, taskName) {
 				    // Open the modal for booking resources for the selected task
 				    $.ajax({
 				        url: '/syngene/soft/getAvailableResources',
 				        type: 'POST',
-				        data: { taskId: taskId },
-				        success: function(response) {
+				        data: { department: department },
+				        success: function(resourceList) {
+				            // Clear the resource table and update the task details in the modal
 				            var resourceTableBody = $('#resourceTable tbody');
 				            resourceTableBody.empty();
-				            response.resources.forEach(function(resource) {
-				                var row = `<tr>
-				                    <td><input type="checkbox" class="resource-checkbox" data-resource-id="${resource.resourceId}"></td>
-				                    <td>${resource.resourceId}</td>
-				                    <td>${resource.resourceName}</td>
-				                    <td>${resource.department}</td>
-				                    <td><input type="text" class="form-control" placeholder="Start Date" /></td>
-				                    <td><input type="text" class="form-control" placeholder="End Date" /></td>
-				                    <td><input type="text" class="form-control" placeholder="Slot" /></td>
-				                </tr>`;
-				                resourceTableBody.append(row);
-				            });
+				            $('#modalTaskName').text(taskName);
+				            $("#modalTaskId").val(taskId);
 
-				            // Show the modal
-				            $('#resourceBookingModal').modal('show');
+				            if (resourceList && resourceList.length > 0) {
+				                // Loop through the resourceList to create table rows
+				                resourceList.forEach(function(resource) {
+				                    var row = `<tr>
+				                        <td><input type="checkbox" class="resource-checkbox" data-resource-id="${resource.resourceId}"></td>
+				                        <td>${resource.resourceId}</td>
+				                        <td>${resource.resourceName}</td>
+				                        <td>${resource.department}</td>
+				                        <td><input type="text" class="form-control datetimepickerformat" placeholder="Start Date" onclick="initializeDatePicker()"/></td>
+				                        <td><input type="text" class="form-control datetimepickerformat" placeholder="End Date" onclick="initializeDatePicker()"/></td>
+				                        <td><input type="text" class="form-control" placeholder="Slot" /></td>
+				                    </tr>`;
+				                    resourceTableBody.append(row);
+				                });
+
+				                // Show the modal
+				                $('#resourceBookingModal').modal('show');
+				            } else {
+				                alert('No available resources found for the selected department.');
+				            }
 				        },
 				        error: function(xhr, status, error) {
-				            console.error("Error fetching available resources:", error);
+				            if (xhr.status === 404) {
+				                alert("No available resources found for the selected department.");
+				            } else {
+				                console.error("Error fetching available resources:", error);
+				            }
 				        }
 				    });
 				}
 
-				function bookSelectedResources() {
-				    var selectedResources = [];
-				    $('.resource-checkbox:checked').each(function() {
-				        var resourceRow = $(this).closest('tr');
-				        var resourceData = {
-				            resourceId: $(this).data('resource-id'),
-				            startDate: resourceRow.find('input:eq(1)').val(),
-				            endDate: resourceRow.find('input:eq(2)').val(),
-				            slot: resourceRow.find('input:eq(3)').val()
-				        };
-				        selectedResources.push(resourceData);
-				    });
-
-				    // Send selected resources data to the server for booking
-				    $.ajax({
-				        url: '/syngene/project/bookResources',
-				        type: 'POST',
-				        contentType: 'application/json',
-				        data: JSON.stringify(selectedResources),
-				        success: function(response) {
-				            alert('Resources booked successfully!');
-				            $('#resourceBookingModal').modal('hide');
-				        },
-				        error: function(xhr, status, error) {
-				            console.error("Error booking resources:", error);
-				        }
-				    });
-				}
-				
-				
 				function redirectToProjectDetailsView(projectCode) {
 				    
 
@@ -116,6 +99,79 @@ function searchProjectOfSoftbooking() {
 				    xhr.open("GET", "/syngene/soft/projectDetailsView/" + projectCode, true);
 				    xhr.send();
 				}
-
- 
 				
+				
+				function bookSelectedResources() {
+				    var resourceBookings = [];
+				    $('.resource-checkbox:checked').each(function() {
+				        var resourceRow = $(this).closest('tr');
+				        var resourceBooking = {
+				            resourceId: $(this).data('resource-id'),
+							resourceName: resourceRow.find('td:eq(2)').text(),               
+							department: resourceRow.find('td:eq(3)').text(), 
+				            startDate: resourceRow.find('input:eq(1)').val(),
+				            endDate: resourceRow.find('input:eq(2)').val(),
+				            slot: resourceRow.find('input:eq(3)').val()
+				        };
+				        resourceBookings.push(resourceBooking);
+				    });
+
+				    // Create Resource object containing list of ResourceBooking
+				    var resource = {
+				        resourceBooking: resourceBookings,
+						projectId:$("#projectId").val(),
+						taskId :$("#modalTaskId").val()
+				    };
+
+					console.log(resource);
+				    // Send the Resource object data to the server for booking
+				    $.ajax({
+				        url: '/syngene/soft/bookResources',
+				        type: 'POST',
+				        contentType: 'application/json',
+				        data: JSON.stringify(resource),
+				        success: function(response) {
+				            alert('Resources booked successfully!');
+				            $('#resourceBookingModal').modal('hide');
+				        },
+				        error: function(xhr, status, error) {
+				            console.error("Error booking resources:", error);
+				        }
+				    });
+				}
+				
+				function viewBookedResources(taskId) {
+				    $.ajax({
+				        url: '/syngene/soft/getBookedResources',
+				        type: 'POST',
+				        data: { taskId: taskId },
+				        success: function(bookedResources) {
+				            var bookedResourceTableBody = $('#bookedResourceTable tbody');
+				            bookedResourceTableBody.empty();
+
+				            if (bookedResources && bookedResources.length > 0) {
+				                // Populate the table with booked resources
+				                bookedResources.forEach(function(resource) {
+				                    var row = `<tr>
+				                        <td>${resource.resourceId}</td>
+				                        <td>${resource.resourceName}</td>
+				                        <td>${resource.department}</td>
+				                        <td>${resource.startDate}</td>
+				                        <td>${resource.endDate}</td>
+				                        <td>${resource.slot}</td>
+				                    </tr>`;
+				                    bookedResourceTableBody.append(row);
+				                });
+
+				                // Show the modal
+				                $('#viewBookedResourcesModal').modal('show');
+				            } else {
+				                alert('No resources have been booked for this task.');
+				            }
+				        },
+				        error: function(xhr, status, error) {
+				            console.error("Error fetching booked resources:", error);
+				        }
+				    });
+				}
+
