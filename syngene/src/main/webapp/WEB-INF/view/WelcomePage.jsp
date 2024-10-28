@@ -15,9 +15,19 @@
      <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
       <script src="resources/js/syngene/projectresource.js"></script>
        <script src="resources/js/syngene/softBooking.js"></script>
-    <script>
+        <script src="resources/js/syngene/home.js"></script>
+           <!-- Include Chart.js -->
+           <!-- Load the Google Charts library -->
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="text/javascript">
     var contextPath = '<%= request.getContextPath() %>';
-   
+    
+      
+    function displayHomePage() {
+        // Automatically load the Home page when the page loads
+        loadCommonList('/project/home', 'Home');
+    }
+       
 
 function loadCommonList(path,heading) {
 	 updateHeading(heading);
@@ -483,7 +493,7 @@ table th {
 }
     </style>
 </head>
-<body>
+<body  onload="displayHomePage()">
 <% 
     String initials = (String) session.getAttribute("userInitials");
     MasterUser user = (MasterUser) session.getAttribute("loginuser");
@@ -493,7 +503,7 @@ table th {
     <!-- Top Navigation Bar -->
     <div class="top-nav">
     
-       <!--  <img src="resources/img/syngenelogo.jpg" alt="Company Logo" class="logo"> -->
+         <img src="resources/img/syngenelogo1.png" alt="Company Logo" style="background-color: currentColor;border-radius: 3px;padding: 5px;/* display: block; */width: 100px;"> 
         <div class="heading">Syngene</div>
          <div class="dropdown">
              <span class="initials-icon"><c:out value="${sessionScope.userInitials}" /></span> <span><c:out value="${sessionScope.loginuser.firstName}" /><c:out value="${sessionScope.loginuser.lastName}" /></span>
@@ -526,7 +536,7 @@ table th {
          <li>
             <a href="#" onclick="loadCommonList('/project/costEstimations', 'Project Cost Estimations')">
               <i class="fa fa-calculator nav-icon"></i>  
-                <span class="nav-text">Project Cost Estimations</span>
+                <span class="nav-text">Project Estimations</span>
             </a>
         </li>
          <li>
@@ -544,9 +554,11 @@ table th {
          <li>
             <a href="#" onclick="loadCommonList('/project/resourceCosting', 'Project Resource Costing')">
                 <i class="fa fa-money nav-icon"></i>
-                <span class="nav-text">Project Resource Costing</span>
+                <span class="nav-text">Actual Project Costing</span>
             </a>
         </li>
+        
+        
         </ul>
     </nav>
     
@@ -752,7 +764,14 @@ table th {
 
     function loadLogout() {
         console.log("Logout clicked");
-        // Add logic to handle logout
+        document.cookie = "JSESSIONID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        
+        // Optionally, clear any additional session storage or local storage
+        sessionStorage.clear();
+        localStorage.clear();
+        
+        // Redirect to the login page or a logout API endpoint
+        window.location.href = 'UserLogin.jsp';
     }
 
     function resetSessionTimer() {

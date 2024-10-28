@@ -28,8 +28,9 @@ public class SoftBookingDaoImpl implements SoftBookingDao{
 		while(rs.next()) {
 			ResourceBooking resource =new ResourceBooking();
 			resource.setDepartment(rs.getString("Department"));
-			resource.setResourceId(String.valueOf(rs.getInt("ResourceId")));
+			resource.setResourceId(rs.getString("ResourceNumber"));
 			resource.setResourceName(rs.getString("ResourceName"));
+			resource.setSkill(rs.getString("Skill"));
 			resourceList.add(resource);
 		}
 		return resourceList;
@@ -45,7 +46,7 @@ public class SoftBookingDaoImpl implements SoftBookingDao{
 				ps.setString(3, resource.getResourceBooking().get(i).getResourceId());
 				ps.setString(4,resource.getResourceBooking().get(i).getResourceName());
 				ps.setString(5,resource.getResourceBooking().get(i).getDepartment());
-				ps.setString(6,null);
+				ps.setString(6,resource.getResourceBooking().get(i).getSkill());
 				ps.setString(7,resource.getResourceBooking().get(i).getStartDate());
 				ps.setString(8,resource.getResourceBooking().get(i).getEndDate());
 				ps.setString(9, resource.getResourceBooking().get(i).getSlot());
@@ -70,7 +71,7 @@ public class SoftBookingDaoImpl implements SoftBookingDao{
 		while(rs.next()) {
 			ResourceBooking resource =new ResourceBooking();
 			resource.setDepartment(rs.getString("Department"));
-			resource.setResourceId(String.valueOf(rs.getInt("ResourceId")));
+			resource.setResourceId(rs.getString("ResourceId"));
 			resource.setResourceName(rs.getString("ResourceName"));
 			resource.setStartDate(rs.getString("StartDate"));
 			resource.setEndDate(rs.getString("EndDate"));

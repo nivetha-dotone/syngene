@@ -1,10 +1,10 @@
 function initializeDatePicker() {
         $('.datetimepickerformat').datepicker({
-            dateFormat: 'yy-mm-dd', // Set the date format
+            dateFormat: 'dd-mm-yy', // Set the date format
             changeMonth: true,      // Allow changing month via dropdown
             changeYear: true,       // Allow changing year via dropdown
-            yearRange: "-100:+0",   // Set the year range from 100 years ago to the current year
-            maxDate: 0              // Prevent selecting future dates
+            yearRange: "-100:+0"   // Set the year range from 100 years ago to the current year
+                        //  maxDate: 0  Prevent selecting future dates
         });
     }
 	
@@ -33,7 +33,8 @@ function initializeDatePicker() {
 		                    var row = '<tr>' +
 		                              '<td>' + resource.department + '</td>' +
 		                              '<td>' + resource.skill + '</td>' +
-		                              '<td>' + resource.noOfResources + '</td>' +
+									  '<td><a href="#" onclick="getResourceDetails(\''+ resource.department +'\',\''+ resource.skill +'\')">' + resource.noOfResources + '</a></td>'+
+									  				                             
 		                              '</tr>';
 		                    tableBody.append(row);
 		                });
@@ -47,6 +48,41 @@ function initializeDatePicker() {
 		    });
 		} 
 
+		function getResourceDetails(department,skill) {
+						    $.ajax({
+						        url: '/syngene/project/getResourceDetails',
+						        type: 'POST',
+						        data: { department: department,skill:skill },
+						        success: function(bookedResources) {
+						            var bookedResourceTableBody = $('#bookedResourceTable tbody');
+						            bookedResourceTableBody.empty();
+
+						            if (bookedResources && bookedResources.length > 0) {
+						                // Populate the table with booked resources
+						                bookedResources.forEach(function(resource) {
+						                    var row = `<tr>
+						                        <td>${resource.resourceId}</td>
+						                        <td>${resource.resourceName}</td>
+						                        <td>${resource.department}</td>
+						                        <td>${resource.skill}</td>
+						                    </tr>`;
+						                    bookedResourceTableBody.append(row);
+						                });
+
+						                // Show the modal
+						                $('#viewBookedResourcesModal').modal('show');
+						            } else {
+						                alert('No resources have been booked for this task.');
+						            }
+						        },
+						        error: function(xhr, status, error) {
+						            console.error("Error fetching booked resources:", error);
+						        }
+						    });
+						}
+
+
+					
 		function searchProject() {
 				    var division = $('#division').val();
 				    var operatingUnit = $('#operatingUnit').val();
@@ -75,8 +111,8 @@ function initializeDatePicker() {
 				                              '<td>' + project.projectManager + '</td>' +
 											  '<td>' + project.operatingUnit + '</td>' +
 											  '<td>' + project.department + '</td>' +
-											  '<td>' + project.startDate + '</td>' +
-											  '<td>' + project.endDate + '</td>' +
+											  '<td  style="width:100px;">' + project.startDate + '</td>' +
+											  '<td  style="width:100px;">' + project.endDate + '</td>' +
 				                              '</tr>';
 				                    tableBody.append(row);
 				                });

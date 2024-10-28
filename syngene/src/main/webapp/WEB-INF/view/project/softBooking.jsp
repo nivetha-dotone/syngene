@@ -28,24 +28,25 @@
             <td>
                 <select class="form-control" id="division">
                     <option value="">Select Division</option>
-                    <option value="Division1">Division1</option>
-                    <option value="Division2">Division2</option>
+                    <option value="Discovery Services">Discovery Services</option>
+                       <option value="Development Services">Development Services</option>
                 </select>
             </td>
 
             <td>
                 <select class="form-control" id="operatingUnit">
                     <option value="">Select Operating Unit</option>
-                    <option value="OU1">Operating Unit 1</option>
-                    <option value="OU2">Operating Unit 2</option>
+                    <option value="Discovery Biology">Discovery Biology</option>
+                     <option value="Chemical Development">Chemical Development</option>
                 </select>
             </td>
 
             <td>
                 <select class="form-control" id="department">
-                    <option value="">Select Department</option>
-                    <option value="Dept1">Department 1</option>
-                    <option value="Dept2">Department 2</option>
+                   <option value="">Select Department</option>
+                    <option value="Assay Biology">Assay Biology</option>
+                    <option value="DMPK">DMPK</option>
+                    <option value="Large Molecules">Large Molecules</option>
                 </select>
             </td>
 
@@ -72,8 +73,8 @@
                     <th>Project Manager</th>
                     <th>Operating Unit</th>
                     <th>Department</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
+                    <th  style="width:100px;">Start Date</th>
+                    <th  style="width:100px;">End Date</th>
                 </tr>
             </thead>
             <tbody>

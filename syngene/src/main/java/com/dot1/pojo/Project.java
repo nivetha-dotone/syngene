@@ -86,6 +86,10 @@ public class Project {
 		this.endDate = endDate;
 	}
 	
+	public Project() {
+		// TODO Auto-generated constructor stub
+	}
+
 	private List<TaskDTO> tasks;
 	private List<MachineryDTO> machinery;
 	public List<TaskDTO> getTasks() {
@@ -99,6 +103,13 @@ public class Project {
 	}
 	public void setMachinery(List<MachineryDTO> machinery) {
 		this.machinery = machinery;
+	}
+	private String division;
+	public String getDivision() {
+		return division;
+	}
+	public void setDivision(String division) {
+		this.division = division;
 	}
 	
 }

@@ -26,8 +26,8 @@
  -->            <td>
                 <select class="form-control" id="division">
                     <option value="">Select Division</option>
-                    <option value="Division1">Division1</option>
-                    <option value="Division2">Division2</option>
+                    <option value="Discovery Services">Discovery Services</option>
+                    <option value="Development Services">Development Services</option>
                     <!-- Add more divisions as needed -->
                 </select>
             </td>
@@ -36,8 +36,8 @@
             <td>
                 <select class="form-control" id="operatingUnit">
                     <option value="">Select Operating Unit</option>
-                    <option value="OU1">Operating Unit 1</option>
-                    <option value="OU2">Operating Unit 2</option>
+                    <option value="Discovery Biology">Discovery Biology</option>
+                    <option value="Chemical Development">Chemical Development</option>
                     <!-- Add more units as needed -->
                 </select>
             </td>
@@ -46,8 +46,9 @@
             <td>
                 <select class="form-control" id="department">
                     <option value="">Select Department</option>
-                    <option value="Dept1">Department 1</option>
-                    <option value="Dept2">Department 2</option>
+                    <option value="Assay Biology">Assay Biology</option>
+                    <option value="DMPK">DMPK</option>
+                    <option value="Large Molecules">Large Molecules</option>
                     <!-- Add more departments as needed -->
                 </select>
             </td>
@@ -87,6 +88,36 @@
         </table>
     </div>
 </div>
-
+    <!-- Modal for viewing booked resources -->
+<div class="modal fade" id="viewBookedResourcesModal" tabindex="-1" role="dialog" aria-labelledby="viewBookedResourcesModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width:150%;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewBookedResourcesModalLabel">Resource Details</h5>
+                
+ <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table" id="bookedResourceTable">
+                    <thead>
+                        <tr>
+                            <th>Resource ID</th>
+                            <th>Resource Name</th>
+                            <th>Department</th>
+                            <th>Skill</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Booked resources will be dynamically populated here -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

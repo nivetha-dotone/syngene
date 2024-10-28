@@ -21,13 +21,13 @@ function searchProjectOfSoftbooking() {
 								console.log(response);
 				                $.each(response, function(index, project) {
 				                    var row = '<tr>' +
-											 '<td><a href="#" onclick="redirectToProjectDetailsView('+ project.projectCode+')">' + project.projectCode + '</a></td>' +
+									'<td><a href="#" onclick="redirectToProjectDetailsView(\''+ project.projectCode +'\')">' + project.projectCode + '</a></td>'+
 				                              '<td>' + project.projectName + '</td>' +
 				                              '<td>' + project.projectManager + '</td>' +
 											  '<td>' + project.operatingUnit + '</td>' +
 											  '<td>' + project.department + '</td>' +
-											  '<td>' + project.startDate + '</td>' +
-											  '<td>' + project.endDate + '</td>' +
+											  '<td  style="width:100px;">' + project.startDate + '</td>' +
+											  '<td  style="width:100px;">' + project.endDate + '</td>' +
 											  
 				                              '</tr>';
 				                    tableBody.append(row);
@@ -64,8 +64,9 @@ function searchProjectOfSoftbooking() {
 				                        <td>${resource.resourceId}</td>
 				                        <td>${resource.resourceName}</td>
 				                        <td>${resource.department}</td>
+										<td>${resource.skill}</td>
 				                        <td><input type="text" class="form-control datetimepickerformat" placeholder="Start Date" onclick="initializeDatePicker()"/></td>
-				                        <td><input type="text" class="form-control datetimepickerformat" placeholder="End Date" onclick="initializeDatePicker()"/></td>
+				                        <td><input type="text" class="form-control datetimepickerformat" placeholder="End Date"  onclick="initializeDatePicker()"/></td>
 				                        <td><input type="text" class="form-control" placeholder="Slot" /></td>
 				                    </tr>`;
 				                    resourceTableBody.append(row);
@@ -109,6 +110,7 @@ function searchProjectOfSoftbooking() {
 				            resourceId: $(this).data('resource-id'),
 							resourceName: resourceRow.find('td:eq(2)').text(),               
 							department: resourceRow.find('td:eq(3)').text(), 
+							skill: resourceRow.find('td:eq(4)').text(),
 				            startDate: resourceRow.find('input:eq(1)').val(),
 				            endDate: resourceRow.find('input:eq(2)').val(),
 				            slot: resourceRow.find('input:eq(3)').val()

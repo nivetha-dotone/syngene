@@ -15,4 +15,12 @@ public interface ProjectQueryBank {
 	String GET_ALL_TASKS_BY_PROJECT_CODE = "SELECT ProjectId,TaskId,TaskName,Skill,NoOfResources,NoOfManDays,StartDate,EndDate from dbo.PROJECTTASKS where ProjectId=? ";
 	
 	String GET_ALL_MACHINERY_BY_PROJECT_CODE = "SELECT ProjectId,MachineName,NoOfHours  from dbo.PROJECTMACHINERY where  ProjectId=?";
+
+	String GET_ALL_PROJECTS = "SELECT ProjectId,ProjectCode,ProjectName,ProjectManager,Division,OperatingUnit,Department,StartDate,EndDate "
+			+ " FROM dbo.PROJECTMASTER";
+
+	String GET_ALL_RESOURCE_BY_DEPT = "SELECT Department,  Skill, COUNT(*) AS NumberOfResources "
+			+ "FROM Resource where Department=? GROUP BY Department, Skill ORDER BY Department, Skill ;";
+
+	String GET_ALL_RESOURCE_BY_DEPT_AND_SKILL = "select ResourceNumber,ResourceName,Department,Skill from RESOURCE where Department=? and skill=?";
 }

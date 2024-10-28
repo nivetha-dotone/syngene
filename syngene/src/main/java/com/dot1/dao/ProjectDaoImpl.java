@@ -3,7 +3,6 @@ package com.dot1.dao;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +15,8 @@ import com.dot1.dto.MachineryDTO;
 import com.dot1.dto.ProjectTaskRequest;
 import com.dot1.dto.TaskDTO;
 import com.dot1.pojo.Project;
+import com.dot1.pojo.Resource;
+import com.dot1.pojo.ResourceBooking;
 import com.dot1.queries.ProjectQueryBank;
 @Repository
 public class ProjectDaoImpl implements ProjectDao{
@@ -120,6 +121,59 @@ public class ProjectDaoImpl implements ProjectDao{
 			status = true;
 		}
 		return status;
+	}
+
+	@Override
+	public List<Project> getAllProjects() {
+		List<Project> projectList = new ArrayList<Project>();
+		
+		SqlRowSet rs = jdbcTemplate.queryForRowSet(ProjectQueryBank.GET_ALL_PROJECTS);
+		
+		while(rs.next()) {
+			Project project=new Project();
+			project.setProjectCode(rs.getString("ProjectCode"));
+			project.setProjectName(rs.getString("ProjectName"));
+			project.setProjectManager(rs.getString("ProjectManager"));
+			project.setOperatingUnit(rs.getString("OperatingUnit"));
+			project.setDepartment(rs.getString("Department"));
+			project.setDivision(rs.getString("Division"));
+			project.setStartDate(rs.getString("StartDate"));
+			project.setEndDate(rs.getString("EndDate"));
+			projectList.add(project);
+		}
+		return projectList;
+	}
+
+	@Override
+	public List<Resource> getAllResourcesByDept(String department) {
+List<Resource> resourceList = new ArrayList<Resource>();
+		
+		SqlRowSet rs = jdbcTemplate.queryForRowSet(ProjectQueryBank.GET_ALL_RESOURCE_BY_DEPT,department);
+		
+		while(rs.next()) {
+			Resource resource = new Resource();
+			resource.setDepartment(rs.getString("Department"));
+			resource.setSkill(rs.getString("Skill"));
+			resource.setNoOfResources(rs.getInt("NumberOfResources"));
+			resourceList.add(resource);
+		}
+		return resourceList;
+	}
+
+	@Override
+	public List<ResourceBooking> getResourceDetails(String department, String skill) {
+		List<ResourceBooking> list = new ArrayList<ResourceBooking>();
+SqlRowSet rs = jdbcTemplate.queryForRowSet(ProjectQueryBank.GET_ALL_RESOURCE_BY_DEPT_AND_SKILL,department,skill);
+		
+		while(rs.next()) {
+			ResourceBooking resource = new ResourceBooking();
+			resource.setResourceId(rs.getString("ResourceNumber"));
+			resource.setResourceName(rs.getString("ResourceName"));
+			resource.setDepartment(rs.getString("Department"));
+			resource.setSkill(rs.getString("Skill"));
+			list.add(resource);
+		}
+		return list;
 	}
 	
 

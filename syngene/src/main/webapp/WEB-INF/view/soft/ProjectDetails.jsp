@@ -97,10 +97,10 @@
 
     <!-- Modal for Resource Booking -->
     <div id="resourceBookingModal" class="modal fade" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                <h5 class="modal-title">Booking Resource For Task <span id="modalTaskName"></span> </h5>
+                <h5 class="modal-title">Booking Resource For Task: <span id="modalTaskName"></span> </h5>
                   <input type="hidden" id="modalTaskId" >
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -113,9 +113,10 @@
                                 <th>Resource ID</th>
                                 <th>Resource Name</th>
                                 <th>Department</th>
-                                <th>Start Date</th>
-                                <th>End Date</th>
-                                <th>Slot</th>
+                                <th>Skill</th>
+                                <th >Start Date</th>
+                                <th >End Date</th>
+                                <th >Slot</th>
                             </tr>
                         </thead>
                         <tbody>

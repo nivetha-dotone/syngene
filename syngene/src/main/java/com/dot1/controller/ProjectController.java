@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.dot1.dto.ProjectTaskRequest;
 import com.dot1.pojo.Project;
 import com.dot1.pojo.Resource;
+import com.dot1.pojo.ResourceBooking;
 import com.dot1.service.ProjectService;
 
 @Controller
@@ -58,6 +59,8 @@ public class ProjectController {
 	    	return "project/resourceCosting";
 	    }
 	 
+	 
+	
 	
 	 
 	 @PostMapping("/resourcesearch")
@@ -69,11 +72,8 @@ public class ProjectController {
 	            @RequestParam(value = "endDate", required = false) String endDate) {
 	        try {
 	        	  // Sample data (replace with your database queries)
-		        List<Resource> resourcesList = new ArrayList<>();
-		        resourcesList.add(new Resource("Dept1", "Java", 5));
-		        resourcesList.add(new Resource("Dept2", "Python", 3));
-		        resourcesList.add(new Resource("Dept1", "Angular", 7));
-
+		        List<Resource> resourcesList = projectService.getAllResourcesByDept(department);
+		        
 		        // Filter logic (this can be extended based on your needs)
 		        List<Resource> filteredResources = new ArrayList<>();
 		        for (Resource resource : resourcesList) {
@@ -99,11 +99,8 @@ public class ProjectController {
 	            @RequestParam(value = "project", required = false) String project
 	            ) {
 	        try {
-		        List<Project> projectList = new ArrayList<>();
-		        projectList.add(new Project("1001", "Project Alpha", "John Doe", "OU1", "Dept1", "2024-01-01", "2024-12-31"));
-		        projectList.add(new Project("1002", "Project Beta", "Jane Smith", "OU2", "Dept2", "2024-02-01", "2024-11-30"));
-		        projectList.add(new Project("1003", "Project Gamma", "Jim Brown", "OU1", "Dept1", "2024-03-01", "2024-10-31"));
-
+		        List<Project> projectList = projectService.getAllProjects();
+		       
 		        List<Project> filteredProjects = new ArrayList<>();
 		        for (Project resource : projectList) {
 		            if ((department == null || department.isEmpty() || resource.getDepartment().equalsIgnoreCase(department))) {
@@ -151,5 +148,14 @@ public class ProjectController {
 	            return ResponseEntity.status(404).body(null);  // Return 404 if project not found
 	        }
 	    }
+	 @PostMapping("/getResourceDetails")
+	 public ResponseEntity<List<ResourceBooking>> getResourceDetails(@RequestParam("department") String department,@RequestParam("skill") String skill) {
+	     List<ResourceBooking> bookedResources = projectService.getResourceDetails(department,skill);
+	     if (bookedResources != null && !bookedResources.isEmpty()) {
+	         return ResponseEntity.ok(bookedResources);
+	     } else {
+	         return ResponseEntity.status(404).body(null);
+	     }
+	 }
 
 }
